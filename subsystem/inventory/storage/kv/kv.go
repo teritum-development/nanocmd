@@ -47,7 +47,22 @@ func (s *KV) RetrieveInventory(ctx context.Context, opt *storage.SearchOptions) 
 		if err = json.Unmarshal(jsonValues, &values); err != nil {
 			return r, fmt.Errorf("unmarshal values for %s: %w", id, err)
 		}
-		r[id] = values
+
+		if len(opt.WDB_UIDs) > 0 {
+			// check if the json value contains the key wdb_id, if it does then check if the value is in the opt.WDB_UIDs
+			if wdbUID, ok := values["wdb_id"]; ok {
+				if wdbUIDStr, ok := wdbUID.(string); ok {
+					for _, wdbUID := range opt.WDB_UIDs { // TODO: this is a bad way of doing this, there *should* be a better way of doing this.
+						if wdbUIDStr == wdbUID {
+							r[id] = values
+							break
+						}
+					}
+				}
+			}
+		} else {
+			r[id] = values
+		}
 	}
 	return r, nil
 }

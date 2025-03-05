@@ -145,9 +145,11 @@ func (w *Workflow) Event(ctx context.Context, e *workflow.Event, id string, mdmC
 		v := make(storage.Values)
 		si := evData.SecurityInfo
 		// wdb_uid is stored in mdmCtx.Params["wdb_uid"] however is not always present
-		if wdb_uid, ok := mdmCtx.Params["wdb_uid"]; ok {
-			// only store wdb_uid if it is present
-			storeIfPresent(v, storage.KeyWdbID, &wdb_uid)
+		if mdmCtx != nil {
+			if wdb_uid, ok := mdmCtx.Params["wdb_uid"]; ok {
+				// only store wdb_uid if it is present
+				storeIfPresent(v, storage.KeyWdbID, &wdb_uid)
+			}
 		}
 
 		storeIfPresent(v, storage.KeySIPEnabled, si.SystemIntegrityProtectionEnabled)

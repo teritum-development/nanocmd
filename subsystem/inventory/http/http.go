@@ -30,6 +30,8 @@ func RetrieveInventory(store storage.ReadStorage, logger log.Logger) http.Handle
 		}
 
 		ids := r.URL.Query()["id"]
+		wdb_ids := r.URL.Query()["wdb_id"]
+
 		if len(ids) < 1 {
 			logger.Info(logkeys.Message, "parameters", logkeys.Error, ErrNoIDs)
 			api.JSONError(w, ErrNoIDs, http.StatusBadRequest)
@@ -40,7 +42,7 @@ func RetrieveInventory(store storage.ReadStorage, logger log.Logger) http.Handle
 			logkeys.FirstEnrollmentID, ids[0],
 			logkeys.GenericCount, len(ids),
 		)
-		opts := &storage.SearchOptions{IDs: ids}
+		opts := &storage.SearchOptions{IDs: ids, WDB_UIDs: wdb_ids}
 		idValues, err := store.RetrieveInventory(r.Context(), opts)
 		if err != nil {
 			logger.Info(logkeys.Message, "retrieve inventory", logkeys.Error, err)

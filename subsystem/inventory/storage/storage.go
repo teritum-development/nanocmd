@@ -12,7 +12,8 @@ var (
 
 // SearchOptions is a basic query for inventory of enrollment IDs.
 type SearchOptions struct {
-	IDs []string // slice of enrollment IDs to query against
+	IDs      []string // slice of enrollment IDs to query against
+	WDB_UIDs []string // slice of wdb_ids to query against
 }
 
 // Values maps inventory storage keys to values.

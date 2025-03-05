@@ -104,6 +104,8 @@ func (w *Workflow) StepCompleted(ctx context.Context, stepResult *workflow.StepR
 				return fmt.Errorf("device info response: %w", err)
 			}
 
+			wdb_uid := stepResult.Params["wdb_uid"]
+
 			v := make(storage.Values)
 			qr := r.QueryResponses
 			storeIfPresent(v, storage.KeySerialNumber, qr.SerialNumber)
@@ -118,6 +120,7 @@ func (w *Workflow) StepCompleted(ctx context.Context, stepResult *workflow.StepR
 			storeIfPresent(v, storage.KeyHasBattery, qr.HasBattery)
 			storeIfPresent(v, storage.KeySupportsLOM, qr.SupportsLOMDevice)
 			storeIfPresent(v, storage.KeyIsMultiUser, qr.IsMultiUser)
+			storeIfPresent(v, storage.WdbID, &wdb_uid)
 			if len(v) > 0 {
 				v[storage.KeyLastSource] = mdmcommands.DeviceInformationRequestType
 				v[storage.KeyModified] = time.Now()
@@ -141,6 +144,7 @@ func (w *Workflow) Event(ctx context.Context, e *workflow.Event, id string, mdmC
 
 		v := make(storage.Values)
 		si := evData.SecurityInfo
+
 		storeIfPresent(v, storage.KeySIPEnabled, si.SystemIntegrityProtectionEnabled)
 		storeIfPresent(v, storage.KeyFDEEnabled, si.FDEEnabled)
 		if len(v) > 0 {

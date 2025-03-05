@@ -18,5 +18,5 @@ const (
 	KeyIsMultiUser  = "is_multiuser"  // bool
 	KeySupportsLOM  = "supports_lom"  // bool
 	KeyAppleSilicon = "apple_silicon" // bool
-	WdbID           = "wdb_id"        // string
+	KeyWdbID        = "wdb_id"        // string
 )

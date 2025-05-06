@@ -258,7 +258,7 @@ func kvDeleteStepNotUntil(ctx context.Context, b kv.Bucket, stepID string) error
 }
 
 // kvFindWorkflowStepsWithIDs finds specific workflow steps (step IDs) for specific enrollment IDs.
-func kvFindWorkflowStepsWithIDs(ctx context.Context, b kv.KeysPrefixTraversingBucket, name string, ids []string) ([]string, error) {
+func kvFindWorkflowStepsWithIDs(ctx context.Context, b kv.KeysPrefixTraversingBucket, workflowName string, ids []string) ([]string, error) {
 	var stepIDs []string
 
 	// this.. is not very efficient. perhaps it would be better to
@@ -273,7 +273,8 @@ start:
 			return nil, fmt.Errorf("getting step meta for %s: %w", k, err)
 		}
 		stepID := k[:len(k)-len(keySfxStepMeta)]
-		if unmarshalStrings(metaBytes)[1] != name {
+		meta := unmarshalStrings(metaBytes)
+		if workflowName != "" && meta[1] != workflowName {
 			continue
 		}
 		stepEnrIDs, err := kvGetStepIDs(ctx, b, stepID)

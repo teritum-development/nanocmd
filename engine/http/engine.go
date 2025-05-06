@@ -83,8 +83,9 @@ func CancelWorkflowHandler(canceller WorkflowCanceller, logger log.Logger) http.
 		name := flow.Param(r.Context(), "name")
 
 		if name == "-1" {
+			logger.Debug(logkeys.Message, "cancelling all workflows")
 			name = ""
-		} // this is done to support canceling all workflows
+		}
 
 		if len(ids) < 1 {
 			logger.Info(logkeys.Message, "parameters", logkeys.Error, ErrNoIDs)

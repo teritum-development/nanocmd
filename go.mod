@@ -1,6 +1,6 @@
 module github.com/micromdm/nanocmd
 
-go 1.19
+go 1.24.0
 
 require (
 	github.com/alexedwards/flow v0.0.0-20220806114457-cf11be9e0e03
@@ -16,5 +16,5 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/google/btree v1.1.2 // indirect
-	golang.org/x/crypto v0.33.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
 )
